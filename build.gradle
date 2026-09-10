@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = "1.0.7"
+group = "com.opentensor"
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+neoForge {
+    version = "21.1.248"
+
+    parchment {
+        mappingsVersion = "2024.11.17"
+        minecraftVersion = "1.21.1"
+    }
+
+    mods {
+        register("opentensor") {
+            sourceSet(sourceSets.main)
+        }
+    }
+
+    runs {
+        client {
+            client()
+        }
+
+        server {
+            server()
+            programArgument('--nogui')
+            gameDirectory = project.file('run/server')
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    // Official OpenComputers: Rebooted maven (github.com/CaitlynMainer/OpenComputers).
+    // Provides both the full jar (runtime/dev) and the `api` classifier jar.
+    // OpenComputers' POM references its own integration favourites; the ones
+    // below host artifacts the OC pom declares with `api` scope.
+    maven { url = "https://maven.michiyo.me/releases/" }
+    maven { url = "https://maven.ryanhcode.dev/releases" }
+}
+
+dependencies {
+    // Full OC jar on the compile classpath: the addon uses OC's public driver
+    // API (li.cil.oc.api.*) for integration plus OC's ready-made text buffer
+    // utilities. OC sources are never touched; the addon only registers
+    // itself via li.cil.oc.api.Driver at init time.
+    compileOnly("li.cil.oc:opencomputers:1.9.4-4")
+    // Present in dev runs so the addon loads on top of OC there too.
+    // Players install the OC jar next to the addon jar (see mods.toml).
+    // Non-transitive: OC bundles what it strictly needs (Scala, Lua...);
+    // integrations (Create, AE2, ...) load only when those mods are present.
+    runtimeOnly("li.cil.oc:opencomputers:1.9.4-4") {
+        transitive = false
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
