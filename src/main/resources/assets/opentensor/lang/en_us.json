@@ -25,7 +25,10 @@
   "item.opentensor.epyc_9354p": "AMD EPYC 9354P",
   "item.opentensor.epyc_7303p": "AMD EPYC 7303P",
   "item.opentensor.ssd_512gb": "Samsung SSD 840 Pro 512GB",
+  "item.opentensor.rtx_5090_32gb": "NVIDIA GeForce RTX 5090 32GB",
+  "block.opentensor.tier5_screen": "Tier 5 Screen",
   "tooltip.opentensor.gpu": "Resolution %1$s×%2$s, %3$s-bit, VRAM %4$s",
+  "tooltip.opentensor.screen": "Resolution %1$s×%2$s, %3$s-bit",
   "tooltip.opentensor.cpu": "Supports %1$s components, speed x%2$s",
   "tooltip.opentensor.lpu": "Resolution %1$s×%2$s, %3$s-bit, SRAM 231MB",
   "tooltip.opentensor.ram": "%1$s DDR5 4800",
@@ -53,5 +56,7 @@
   "tooltip.opentensor.desc.ddr5_128gb": "DDR5 ECC REG server memory, 4800 MT/s.",
   "tooltip.opentensor.desc.epyc_9354p": "32-core Genoa server CPU, 2023.",
   "tooltip.opentensor.desc.epyc_7303p": "16-core Milan server CPU, 2021.",
-  "tooltip.opentensor.desc.ssd_512gb": "SATA SSD, 2012. 512GB."
+  "tooltip.opentensor.desc.ssd_512gb": "SATA SSD, 2012. 512GB.",
+  "tooltip.opentensor.desc.rtx_5090_32gb": "Blackwell gaming GPU, 2025. 32GB GDDR7.",
+  "tooltip.opentensor.desc.screen_tier5": "Tier 5 display, 380x120 at 16-bit color."
 }

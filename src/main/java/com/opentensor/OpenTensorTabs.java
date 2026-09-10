@@ -44,6 +44,8 @@ public final class OpenTensorTabs {
                         output.accept(ModItems.EPYC_9354P.get());
                         output.accept(ModItems.EPYC_7303P.get());
                         output.accept(ModItems.SSD_512GB.get());
+                        output.accept(ModItems.RTX_5090_32GB.get());
+                        output.accept(ModItems.TIER5_SCREEN.get());
                     })
                     .build());
 

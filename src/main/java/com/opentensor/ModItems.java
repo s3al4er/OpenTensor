@@ -42,6 +42,16 @@ public final class ModItems {
                     () -> new TensorSsdItem(TensorSsdSpec.SSD_512GB,
                             new Item.Properties().rarity(TensorSsdSpec.SSD_512GB.rarity())));
 
+    public static final DeferredItem<TensorTier5GpuItem> RTX_5090_32GB =
+            ITEMS.register(TensorTier5GpuSpec.RTX_5090_32GB.id(),
+                    () -> new TensorTier5GpuItem(TensorTier5GpuSpec.RTX_5090_32GB,
+                            new Item.Properties().rarity(TensorTier5GpuSpec.RTX_5090_32GB.rarity())));
+
+    public static final DeferredItem<TensorScreenBlockItem> TIER5_SCREEN =
+            ITEMS.register("tier5_screen",
+                    () -> new TensorScreenBlockItem(ModBlocks.TIER5_SCREEN.get(),
+                            new Item.Properties().rarity(Rarity.EPIC)));
+
     public static final DeferredItem<GroqLpuItem> GROQ_LPU =
             ITEMS.register(GroqDriver.ITEM_ID, () -> new GroqLpuItem(new Item.Properties().rarity(Rarity.EPIC)));
 
