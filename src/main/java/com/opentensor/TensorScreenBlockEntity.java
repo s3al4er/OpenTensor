@@ -46,6 +46,19 @@ public class TensorScreenBlockEntity extends li.cil.oc.common.blockentity.Screen
     }
 
     @Override
+    public void loadComponentsCommon(net.minecraft.core.component.DataComponentHolder holder) {
+        // Stock resets to the tier color here and then applies the saved
+        // color on top. Hook in after it: anything still wearing the tier
+        // default (fresh placements AND pre-existing gray screens) becomes
+        // OC blue; genuinely dyed screens keep their color. Quirk: a screen
+        // dyed exactly the tier-3 gray flips back to blue on reload.
+        super.loadComponentsCommon(holder);
+        if (getColor() == li.cil.oc.util.Color$.MODULE$.byTier(3)) {
+            setColor(0x6666FF); // li.cil.oc.util.Color.rgbValues(DyeColor.BLUE)
+        }
+    }
+
+    @Override
     public void updateEntity() {
         // Run stock logic first (it re-applies stock tier limits while
         // restoring deferred buffer data), then re-assert ours on top.

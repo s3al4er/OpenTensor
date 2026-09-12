@@ -22,5 +22,6 @@ public final class GroqLpuItem extends Item {
                 GroqLpuEnvironment.MAX_WIDTH, GroqLpuEnvironment.MAX_HEIGHT,
                 GroqLpuEnvironment.MAX_DEPTH_BITS));
         tooltip.add(Component.translatable("tooltip.opentensor.desc.groq_lpu"));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

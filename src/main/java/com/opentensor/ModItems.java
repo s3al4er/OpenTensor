@@ -6,7 +6,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
- * The seventeen Tensor GPU items, plus memory and CPUs.
+ * The twenty-seven Tensor GPU items, plus memory and CPUs.
  */
 public final class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(OpenTensor.MODID);
@@ -17,6 +17,7 @@ public final class ModItems {
     public static final DeferredItem<TensorGpuItem> H100_96GB = register(TensorGpuSpec.H100_96GB);
     public static final DeferredItem<TensorGpuItem> H200_141GB = register(TensorGpuSpec.H200_141GB);
     public static final DeferredItem<TensorGpuItem> RTX_PRO_6000_BLACKWELL_96GB = register(TensorGpuSpec.RTX_PRO_6000_BLACKWELL_96GB);
+    public static final DeferredItem<TensorGpuItem> RTX_PRO_6000_ADA_48GB = register(TensorGpuSpec.RTX_PRO_6000_ADA_48GB);
     public static final DeferredItem<TensorGpuItem> TESLA_P40_24GB = register(TensorGpuSpec.TESLA_P40_24GB);
     public static final DeferredItem<TensorGpuItem> TESLA_T4_16GB = register(TensorGpuSpec.TESLA_T4_16GB);
     public static final DeferredItem<TensorGpuItem> RTX_3090_24GB = register(TensorGpuSpec.RTX_3090_24GB);
@@ -28,6 +29,15 @@ public final class ModItems {
     public static final DeferredItem<TensorGpuItem> RX_580_4GB = register(TensorGpuSpec.RX_580_4GB);
     public static final DeferredItem<TensorGpuItem> RX_580_8GB = register(TensorGpuSpec.RX_580_8GB);
     public static final DeferredItem<TensorGpuItem> TPU_V6E_32GB = register(TensorGpuSpec.TPU_V6E_32GB);
+    public static final DeferredItem<TensorGpuItem> A10_24GB = register(TensorGpuSpec.A10_24GB);
+    public static final DeferredItem<TensorGpuItem> A30_24GB = register(TensorGpuSpec.A30_24GB);
+    public static final DeferredItem<TensorGpuItem> A40_48GB = register(TensorGpuSpec.A40_48GB);
+    public static final DeferredItem<TensorGpuItem> TESLA_K80_24GB = register(TensorGpuSpec.TESLA_K80_24GB);
+    public static final DeferredItem<TensorGpuItem> TESLA_P100_16GB = register(TensorGpuSpec.TESLA_P100_16GB);
+    public static final DeferredItem<TensorGpuItem> INSTINCT_MI50_16GB = register(TensorGpuSpec.INSTINCT_MI50_16GB);
+    public static final DeferredItem<TensorGpuItem> INSTINCT_MI100_32GB = register(TensorGpuSpec.INSTINCT_MI100_32GB);
+    public static final DeferredItem<TensorGpuItem> INSTINCT_MI200_64GB = register(TensorGpuSpec.INSTINCT_MI200_64GB);
+    public static final DeferredItem<TensorGpuItem> INSTINCT_MI250X_128GB = register(TensorGpuSpec.INSTINCT_MI250X_128GB);
 
     public static final DeferredItem<TensorMemoryItem> DDR5_16GB = registerMemory(TensorMemorySpec.DDR5_16GB);
     public static final DeferredItem<TensorMemoryItem> DDR5_32GB = registerMemory(TensorMemorySpec.DDR5_32GB);
@@ -54,6 +64,14 @@ public final class ModItems {
 
     public static final DeferredItem<GroqLpuItem> GROQ_LPU =
             ITEMS.register(GroqDriver.ITEM_ID, () -> new GroqLpuItem(new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final DeferredItem<NoctuaFanItem> NOCTUA_NF_A14 =
+            ITEMS.register(NoctuaFanEnvironment.ITEM_ID,
+                    () -> new NoctuaFanItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+
+    public static final DeferredItem<NoctuaFanItem> NOCTUA_NF_A14_CARD =
+            ITEMS.register(NoctuaFanEnvironment.CARD_ITEM_ID,
+                    () -> new NoctuaFanItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     private ModItems() {
     }

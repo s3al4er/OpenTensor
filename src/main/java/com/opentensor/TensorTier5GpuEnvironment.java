@@ -9,7 +9,9 @@ import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.machine.LimitReachedException;
+import li.cil.oc.api.machine.MachineHost;
 import li.cil.oc.api.network.ComponentConnector;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
@@ -92,6 +94,11 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
     private final double totalVRAM;
     private final double costScale;
     private final ComponentConnector node;
+    private final EnvironmentHost host;
+
+    private double temperature = TensorThermal.AMBIENT_C;
+    private boolean overheatSignaled;
+    private boolean hotLogged;
 
     private String screenAddress;
     private TextBuffer screenInstance;
@@ -100,9 +107,14 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
     private boolean budgetExhausted;
 
     public TensorTier5GpuEnvironment(TensorTier5GpuSpec spec) {
+        this(spec, null);
+    }
+
+    public TensorTier5GpuEnvironment(TensorTier5GpuSpec spec, EnvironmentHost host) {
         this.spec = spec;
         this.totalVRAM = MAX_CELLS * spec.vramScreens();
         this.costScale = spec.costScale();
+        this.host = host;
         this.node = Network.newNode(this, Visibility.Neighbors)
                 .withComponent("gpu")
                 .withConnector()
@@ -112,6 +124,61 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
     @Override
     public Node node() {
         return node;
+    }
+
+    @Override
+    public boolean canUpdate() {
+        return true;
+    }
+
+    @Override
+    public void update() {
+        int fans = TensorThermal.countFans(node, host);
+        temperature = TensorThermal.tick(temperature, fans, isHostRunning());
+        if (temperature >= 80.0 && !hotLogged) {
+            hotLogged = true;
+            TensorThermal.LOG.info("[opentensor] {} temp {}C (fans={}, host={})",
+                    spec.product(),
+                    String.format(java.util.Locale.ROOT, "%.1f", temperature),
+                    fans,
+                    host != null ? host.getClass().getSimpleName() : "null");
+        } else if (temperature < 70.0) {
+            hotLogged = false;
+        }
+        if (temperature > TensorThermal.OVERHEAT_C && !overheatSignaled) {
+            overheatSignaled = true;
+            try {
+                node.sendToReachable("tensor_overheat", spec.product(), temperature);
+            } catch (Throwable ignored) {
+                // Signalling must never break the tick.
+            }
+            if (host instanceof MachineHost machine) {
+                try {
+                    machine.machine().stop();
+                } catch (Throwable ignored) {
+                    // The machine may already be stopping; ignore.
+                }
+            }
+        } else if (temperature <= TensorThermal.OVERHEAT_C - 5.0) {
+            overheatSignaled = false;
+        }
+    }
+
+    /** Adds work heat (called from screen-bound drawing operations). */
+    private void heat(double amount) {
+        temperature = TensorThermal.clamp(temperature + amount);
+    }
+
+    /** Idle heat applies only while the host machine is actually running. */
+    private boolean isHostRunning() {
+        if (host instanceof MachineHost machine) {
+            try {
+                return machine.machine().isRunning();
+            } catch (Throwable ignored) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // ------------------------------------------------------------------ //
@@ -241,6 +308,9 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
         info.put(DeviceAttribute.Capacity, String.valueOf((long) totalVRAM));
         info.put(DeviceAttribute.Width, String.valueOf(OcBuffers.bits(MAX_DEPTH)));
         info.put(DeviceAttribute.Clock, clockInfo());
+        info.put("temperature", String.format(java.util.Locale.ROOT, "%.1f", temperature));
+        info.put("memory", spec.memory());
+        info.put("fans", String.valueOf(TensorThermal.countFans(node, host)));
         return info;
     }
 
@@ -311,6 +381,16 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
         return new Object[]{totalVRAM - usedMemory()};
     }
 
+    @Callback(direct = true, doc = "function():number -- Returns the current GPU temperature in degrees Celsius.")
+    public Object[] getTemperature(Context context, Arguments args) {
+        return new Object[]{temperature};
+    }
+
+    @Callback(direct = true, doc = "function():number -- Returns how many Noctua fans in the same machine cool this GPU.")
+    public Object[] getFans(Context context, Arguments args) {
+        return new Object[]{TensorThermal.countFans(node, host)};
+    }
+
     @Callback(direct = true, doc = "function(index: number): number, number -- returns the buffer size at index. Returns the screen resolution for index 0. returns nil for invalid indexes")
     public Object[] getBufferSize(Context context, Arguments args) throws Exception {
         int index = args.optInteger(0, bufferIndex);
@@ -362,9 +442,15 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
                         int tx = col - fromCol;
                         int ty = row - fromRow;
                         dst.copy(fromCol - 1, fromRow - 1, w, h, tx, ty);
+                        if (dstIndex == RESERVED_SCREEN_INDEX) {
+                            heat(w * h * TensorThermal.HEAT_PER_CELL);
+                        }
                         return new Object[]{true};
                     }
                     GpuTextBuffer$.MODULE$.bitblt(dst, col, row, w, h, src, fromCol, fromRow);
+                    if (dstIndex == RESERVED_SCREEN_INDEX) {
+                        heat(w * h * TensorThermal.HEAT_PER_CELL);
+                    }
                     return new Object[]{true};
                 }
                 return new Object[]{null, "not enough energy"};
@@ -632,6 +718,9 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
         return onActiveBuffer(screen -> {
             if (resolveInvokeCosts(bufferIndex, context, COST_SET * costScale, codePointLength(value), ENERGY_SET * costScale)) {
                 screen.set(x, y, value, vertical);
+                if (bufferIndex == RESERVED_SCREEN_INDEX) {
+                    heat(TensorThermal.HEAT_SET);
+                }
                 return new Object[]{true};
             }
             return new Object[]{null, "not enough energy"};
@@ -649,6 +738,9 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
         return onActiveBuffer(screen -> {
             if (resolveInvokeCosts(bufferIndex, context, COST_COPY * costScale, w * h, ENERGY_COPY * costScale)) {
                 screen.copy(x, y, w, h, tx, ty);
+                if (bufferIndex == RESERVED_SCREEN_INDEX) {
+                    heat(w * h * TensorThermal.HEAT_PER_CELL);
+                }
                 return new Object[]{true};
             }
             return new Object[]{null, "not enough energy"};
@@ -668,6 +760,9 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
                 double cost = c == ' ' ? ENERGY_CLEAR : ENERGY_FILL;
                 if (resolveInvokeCosts(bufferIndex, context, COST_FILL * costScale, w * h, cost * costScale)) {
                     screen.fill(x, y, w, h, c);
+                    if (bufferIndex == RESERVED_SCREEN_INDEX) {
+                        heat(w * h * TensorThermal.HEAT_PER_CELL);
+                    }
                     return new Object[]{true};
                 }
                 return new Object[]{null, "not enough energy"};
@@ -737,6 +832,9 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
             screenAddress = tag.contains(TAG_SCREEN) ? tag.getString(TAG_SCREEN) : null;
             screenInstance = null;
             bufferIndex = tag.contains(TAG_BUFFER) ? tag.getInt(TAG_BUFFER) : RESERVED_SCREEN_INDEX;
+            temperature = tag.contains(TensorThermal.TAG_TEMP)
+                    ? TensorThermal.clamp(tag.getDouble(TensorThermal.TAG_TEMP))
+                    : TensorThermal.AMBIENT_C;
         }
         removeAllBuffers();
         CustomData vram = holder.get(TensorDataComponents.GPU_VRAM.get());
@@ -769,6 +867,7 @@ public final class TensorTier5GpuEnvironment extends AbstractManagedEnvironment 
             tag.putString(TAG_SCREEN, screenAddress);
         }
         tag.putInt(TAG_BUFFER, bufferIndex);
+        tag.putDouble(TensorThermal.TAG_TEMP, temperature);
         holder.set(TensorDataComponents.GPU_STATE.get(), CustomData.of(tag));
 
         CompoundTag vram = new CompoundTag();

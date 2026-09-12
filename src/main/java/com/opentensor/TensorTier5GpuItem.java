@@ -29,5 +29,6 @@ public final class TensorTier5GpuItem extends Item {
                 TensorTier5GpuEnvironment.MAX_WIDTH, TensorTier5GpuEnvironment.MAX_HEIGHT,
                 TensorTier5GpuEnvironment.MAX_DEPTH_BITS, spec.memory()));
         tooltip.add(Component.translatable("tooltip.opentensor.desc." + spec.id()));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

@@ -26,5 +26,6 @@ public final class TensorSsdItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.opentensor.desc." + spec.id()));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

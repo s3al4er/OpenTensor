@@ -27,5 +27,6 @@ public final class TensorCpuItem extends Item {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.opentensor.cpu", spec.components(), spec.callBudget()));
         tooltip.add(Component.translatable("tooltip.opentensor.desc." + spec.id()));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

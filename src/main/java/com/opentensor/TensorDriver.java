@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * Item driver exposing the seventeen Tensor GPU cards to computers as {@code gpu}
+ * Item driver exposing the twenty-seven Tensor GPU cards to computers as {@code gpu}
  * components. Registered (together with {@link Provider}) via the public
  * {@code li.cil.oc.api.Driver} API only.
  */
@@ -45,7 +45,7 @@ public final class TensorDriver implements li.cil.oc.api.driver.DriverItem {
         if (spec == null) {
             return null;
         }
-        return new TensorGpuEnvironment(spec);
+        return new TensorGpuEnvironment(spec, host);
     }
 
     @Override

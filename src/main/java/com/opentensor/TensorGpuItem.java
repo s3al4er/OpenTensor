@@ -29,5 +29,6 @@ public final class TensorGpuItem extends Item {
                 TensorGpuEnvironment.MAX_WIDTH, TensorGpuEnvironment.MAX_HEIGHT,
                 TensorGpuEnvironment.MAX_DEPTH_BITS, spec.memory()));
         tooltip.add(Component.translatable("tooltip.opentensor.desc." + spec.id()));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

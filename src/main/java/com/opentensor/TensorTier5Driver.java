@@ -45,7 +45,7 @@ public final class TensorTier5Driver implements li.cil.oc.api.driver.DriverItem 
         if (spec == null) {
             return null;
         }
-        return new TensorTier5GpuEnvironment(spec);
+        return new TensorTier5GpuEnvironment(spec, host);
     }
 
     @Override

@@ -239,6 +239,7 @@ public final class GroqLpuEnvironment extends AbstractManagedEnvironment impleme
         info.put(DeviceAttribute.Capacity, String.valueOf((long) totalVRAM));
         info.put(DeviceAttribute.Width, String.valueOf(OcBuffers.bits(MAX_DEPTH)));
         info.put(DeviceAttribute.Clock, ((long) (CPU_CALL_BUDGET * 1000)) + "+" + clockInfo());
+        info.put("memory", "231MB");
         return info;
     }
 

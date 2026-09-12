@@ -63,6 +63,9 @@ public final class OpenTensor {
             li.cil.oc.api.Driver.add(TensorSsdDriver.PROVIDER);
             li.cil.oc.api.Driver.add(TensorTier5Driver.INSTANCE);
             li.cil.oc.api.Driver.add(TensorTier5Driver.PROVIDER);
+            li.cil.oc.api.Driver.add(NoctuaFanDriver.BUS);
+            li.cil.oc.api.Driver.add(NoctuaFanDriver.CARD);
+            li.cil.oc.api.Driver.add(NoctuaFanDriver.PROVIDER);
         });
     }
 }

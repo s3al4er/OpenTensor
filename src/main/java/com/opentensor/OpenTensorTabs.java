@@ -25,6 +25,7 @@ public final class OpenTensorTabs {
                         output.accept(ModItems.H100_96GB.get());
                         output.accept(ModItems.H200_141GB.get());
                         output.accept(ModItems.RTX_PRO_6000_BLACKWELL_96GB.get());
+                        output.accept(ModItems.RTX_PRO_6000_ADA_48GB.get());
                         output.accept(ModItems.TESLA_P40_24GB.get());
                         output.accept(ModItems.TESLA_T4_16GB.get());
                         output.accept(ModItems.RTX_3090_24GB.get());
@@ -36,6 +37,15 @@ public final class OpenTensorTabs {
                         output.accept(ModItems.RX_580_4GB.get());
                         output.accept(ModItems.RX_580_8GB.get());
                         output.accept(ModItems.TPU_V6E_32GB.get());
+                        output.accept(ModItems.A10_24GB.get());
+                        output.accept(ModItems.A30_24GB.get());
+                        output.accept(ModItems.A40_48GB.get());
+                        output.accept(ModItems.TESLA_K80_24GB.get());
+                        output.accept(ModItems.TESLA_P100_16GB.get());
+                        output.accept(ModItems.INSTINCT_MI50_16GB.get());
+                        output.accept(ModItems.INSTINCT_MI100_32GB.get());
+                        output.accept(ModItems.INSTINCT_MI200_64GB.get());
+                        output.accept(ModItems.INSTINCT_MI250X_128GB.get());
                         output.accept(ModItems.GROQ_LPU.get());
                         output.accept(ModItems.DDR5_16GB.get());
                         output.accept(ModItems.DDR5_32GB.get());
@@ -46,6 +56,8 @@ public final class OpenTensorTabs {
                         output.accept(ModItems.SSD_512GB.get());
                         output.accept(ModItems.RTX_5090_32GB.get());
                         output.accept(ModItems.TIER5_SCREEN.get());
+                        output.accept(ModItems.NOCTUA_NF_A14.get());
+                        output.accept(ModItems.NOCTUA_NF_A14_CARD.get());
                     })
                     .build());
 

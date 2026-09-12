@@ -3,7 +3,7 @@ package com.opentensor;
 import net.minecraft.world.item.Rarity;
 
 /**
- * The seventeen Tensor GPUs.
+ * The twenty-seven Tensor GPUs.
  *
  * <p>All cards share the top-end display specs (190x60, 8-bit, Tier-3-class
  * call budget) and differ in three respects:</p>
@@ -25,6 +25,7 @@ public enum TensorGpuSpec {
     H100_96GB("h100_96gb", "NVIDIA", "NVIDIA H100 96GB", "96GB", 20.0, 0.6, "h100", Rarity.EPIC),
     H200_141GB("h200_141gb", "NVIDIA", "NVIDIA H200 141GB", "141GB", 28.0, 0.5, "h200", Rarity.EPIC),
     RTX_PRO_6000_BLACKWELL_96GB("rtx_pro_6000_blackwell_96gb", "NVIDIA", "NVIDIA RTX PRO 6000 Blackwell 96GB", "96GB", 20.0, 0.55, "rtx_pro_6000_blackwell", Rarity.EPIC),
+    RTX_PRO_6000_ADA_48GB("rtx_pro_6000_ada_48gb", "NVIDIA", "NVIDIA RTX PRO 6000 Ada", "48GB", 9.6, 0.6, "rtx_pro_6000_ada", Rarity.EPIC),
     TESLA_P40_24GB("tesla_p40_24gb", "NVIDIA", "NVIDIA Tesla P40", "24GB", 4.8, 1.2, "tesla_p40", Rarity.UNCOMMON),
     TESLA_T4_16GB("tesla_t4_16gb", "NVIDIA", "NVIDIA Tesla T4", "16GB", 3.2, 1.1, "tesla_t4", Rarity.UNCOMMON),
     RTX_3090_24GB("rtx_3090_24gb", "NVIDIA", "NVIDIA GeForce RTX 3090", "24GB", 4.8, 0.9, "rtx_3090", Rarity.RARE),
@@ -35,7 +36,16 @@ public enum TensorGpuSpec {
     TESLA_V100_32GB("tesla_v100_32gb", "NVIDIA", "NVIDIA Tesla V100", "32GB", 6.4, 0.95, "tesla_v100", Rarity.RARE),
     RX_580_4GB("rx_580_4gb", "AMD", "AMD Radeon RX 580", "4GB", 0.8, 1.0, "rx580", Rarity.UNCOMMON),
     RX_580_8GB("rx_580_8gb", "AMD", "AMD Radeon RX 580", "8GB", 1.6, 1.0, "rx580", Rarity.UNCOMMON),
-    TPU_V6E_32GB("tpu_v6e_32gb", "Google", "Google TPU v6e", "32GB", 6.4, 0.65, "tpu_v6e", Rarity.EPIC);
+    TPU_V6E_32GB("tpu_v6e_32gb", "Google", "Google TPU v6e", "32GB", 6.4, 0.65, "tpu_v6e", Rarity.EPIC),
+    A10_24GB("a10_24gb", "NVIDIA", "NVIDIA A10 24GB", "24GB", 4.8, 1.0, "a10", Rarity.RARE),
+    A30_24GB("a30_24gb", "NVIDIA", "NVIDIA A30 24GB", "24GB", 4.8, 0.9, "a30", Rarity.RARE),
+    A40_48GB("a40_48gb", "NVIDIA", "NVIDIA A40 48GB", "48GB", 9.6, 0.75, "a40", Rarity.RARE),
+    TESLA_K80_24GB("tesla_k80_24gb", "NVIDIA", "NVIDIA Tesla K80", "24GB", 4.8, 1.4, "tesla_k80", Rarity.COMMON),
+    TESLA_P100_16GB("tesla_p100_16gb", "NVIDIA", "NVIDIA Tesla P100", "16GB", 3.2, 1.05, "tesla_p100", Rarity.UNCOMMON),
+    INSTINCT_MI50_16GB("instinct_mi50_16gb", "AMD", "AMD Radeon Instinct MI50", "16GB", 3.2, 1.0, "instinct_mi50", Rarity.UNCOMMON),
+    INSTINCT_MI100_32GB("instinct_mi100_32gb", "AMD", "AMD Instinct MI100", "32GB", 6.4, 0.8, "instinct_mi100", Rarity.RARE),
+    INSTINCT_MI200_64GB("instinct_mi200_64gb", "AMD", "AMD Instinct MI200", "64GB", 12.8, 0.6, "instinct_mi200", Rarity.EPIC),
+    INSTINCT_MI250X_128GB("instinct_mi250x_128gb", "AMD", "AMD Instinct MI250X", "128GB", 25.6, 0.55, "instinct_mi250x", Rarity.EPIC);
 
     private final String id;
     private final String vendor;

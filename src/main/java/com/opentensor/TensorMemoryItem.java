@@ -27,5 +27,6 @@ public final class TensorMemoryItem extends Item {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.opentensor.ram", spec.label()));
         tooltip.add(Component.translatable("tooltip.opentensor.desc." + spec.id()));
+        TensorTooltips.appendAddress(stack, tooltip);
     }
 }

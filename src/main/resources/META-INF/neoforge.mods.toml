@@ -5,9 +5,9 @@ issueTrackerURL="https://github.com/CaitlynMainer/OpenComputers/issues"
 
 [[mods]]
 modId="opentensor"
-version="1.0.8"
+version="1.0.9"
 displayName="OpenTensor"
-description="Adds datacenter GPUs (NVIDIA A100/H100/H200/RTX PRO 6000/Tesla P40/T4/V100, GT 730, RTX 3090/5090, AMD RX 580, Google TPU v6e), a Tier 5 screen, the Groq LPU, DDR5 memory, AMD EPYC CPUs and a Samsung 840 Pro SSD to OpenComputers. Install on top of OpenComputers."
+description="Adds datacenter GPUs (NVIDIA A100/H100/H200/RTX PRO 6000 Blackwell/Ada, Tesla P40/T4/V100, GT 730, RTX 3090/5090, AMD RX 580, Google TPU v6e) with temperature simulation, a Noctua cooling fan, a Tier 5 screen, the Groq LPU, DDR5 memory, AMD EPYC CPUs, a Samsung 840 Pro SSD and an OpenTensor tools floppy (opentensor-smi, neofetch) to OpenComputers. Install on top of OpenComputers."
 authors="OpenTensor"
 
 [[dependencies.opentensor]]
